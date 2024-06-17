@@ -28,13 +28,13 @@ class Scanner
         @tokens << Token.new(Token::NUMBER, value)
         next
       elsif curr == '['
-        @tokens << Token.new(Token::LSBRACKET, '[')
+        @tokens << Token.new(Token::LEFT_SQUARE_BRACKET, '[')
       elsif curr == ']'
-        @tokens << Token.new(Token::RSBRACKET, ']')
+        @tokens << Token.new(Token::RIGHT_SQUARE_BRACKET, ']')
       elsif curr == '{'
-        @tokens << Token.new(Token::LBRACKET, '{')
+        @tokens << Token.new(Token::LEFT_BRACKET, '{')
       elsif curr == '}'
-        @tokens << Token.new(Token::RBRACKET, '}')
+        @tokens << Token.new(Token::RIGHT_BRACKET, '}')
       elsif curr == ':'
         @tokens << Token.new(Token::COLON, ':')
       elsif curr == ','

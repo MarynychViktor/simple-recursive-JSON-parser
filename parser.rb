@@ -3,22 +3,25 @@ require_relative 'token'
 
 class Parser
   def initialize(json_string)
-    @json_string = json_string
-    @tokens ||= Scanner.new(json_string).scan
+    @json_string = json_string.to_s
+    @tokens ||= Scanner.new(@json_string).scan
     @current = 0
   end
 
   def parse
-    parse_json
+    value = parse_json
+    return value if end?
+
+    raise "Parse error"
   end
 
   private
 
   def parse_json
-    if token.kind == Token::LBRACKET
+    if token.kind == Token::LEFT_BRACKET
       move
       parse_object
-    elsif token.kind == Token::LSBRACKET
+    elsif token.kind == Token::LEFT_SQUARE_BRACKET
       move
       parse_array
     elsif token.kind == Token::NUMBER
@@ -40,8 +43,12 @@ class Parser
       properties << parse_property
     end
 
-    consume(Token::RBRACKET)
-    properties.each {|prop| obj[prop[:key]] = prop[:value]}
+    consume(Token::RIGHT_BRACKET)
+    properties.each do |prop|
+      raise "Parser error" if obj.key?(prop[:key])
+
+      obj[prop[:key]] = prop[:value]
+    end
 
     obj
   end
@@ -62,7 +69,7 @@ class Parser
       items << parse_json
     end
 
-    consume(Token::RSBRACKET)
+    consume(Token::RIGHT_SQUARE_BRACKET)
 
     items
   end
