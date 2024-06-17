@@ -93,8 +93,4 @@ class Parser
   def end?
     @current >= @tokens.length
   end
-
-  def tokens
-    @tokens ||= Scanner.new(@json_string).scan
-  end
 end
